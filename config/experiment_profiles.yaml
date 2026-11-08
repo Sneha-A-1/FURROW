@@ -1,0 +1,85 @@
+# Experiment grids. Each job = (overrides, scheduler, retrieval, seed).
+# 'methods' lists (label, scheduler, retrieval, extra overrides).
+
+B_scheduling:
+  description: Scheduling comparison under identical workloads (retrieval fixed to THR).
+  seeds: 20
+  sweep: {rho: [0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8]}
+  methods:
+    - [FCFS, FCFS, THR, {}]
+    - [RR, RR, THR, {}]
+    - [SJF, SJF, THR, {}]
+    - [EDF, EDF, THR, {}]
+    - [PRIO, PRIO, THR, {}]
+    - [MCT, MCT, THR, {}]
+    - [MINMIN, MINMIN, THR, {}]
+    - [GA, GA, THR, {}]
+    - [FURROW-S, FURROW-S, THR, {}]
+  keep_tasks: {rho: 1.4, seed: 0}
+
+C_integrated:
+  description: Retrieval x scheduling combinations (integration benefit).
+  seeds: 20
+  sweep: {rho: [1.0, 1.4], deadline_u: [10.0, 5.0]}
+  methods:
+    - [THR+PRIO, PRIO, THR, {}]
+    - [THR+EDF, EDF, THR, {}]
+    - [AoI8+PRIO, PRIO, AoI, {slack_budget: false}]
+    - [ALL+PRIO, PRIO, ALL, {}]
+    - [FURROW-R8+PRIO, PRIO, FURROW-R, {slack_budget: false}]
+    - [THR+FURROW-S, FURROW-S, THR, {}]
+    - [AoI8+FURROW-S, FURROW-S, AoI, {slack_budget: false}]
+    - [FURROW, FURROW-S, FURROW-R, {}]
+
+D_ablation:
+  description: One mechanism removed at a time from the full framework.
+  seeds: 20
+  sweep: {rho: [1.4]}
+  methods:
+    - [FURROW, FURROW-S, FURROW-R, {}]
+    - [-VoI (AoI refresh), FURROW-S, AoI, {slack_budget: false}]
+    - [-refresh (THR), FURROW-S, THR, {}]
+    - [-slack budget, FURROW-S, FURROW-R, {slack_budget: false}]
+    - [-laxity order, FURROW-S, FURROW-R, {furrow.laxity: false}]
+    - [-reservation, FURROW-S, FURROW-R, {furrow.reservation: none}]
+    - [-forecast (EWMA), FURROW-S, FURROW-R, {furrow.reservation: ewma}]
+    - [-fidelity, FURROW-S, FURROW-R, {furrow.fidelity: false}]
+    - [-locality, FURROW-S, FURROW-R, {furrow.locality: false}]
+    - [-edge opportunism, FURROW-S, FURROW-R, {furrow.gw_opportunistic: false}]
+
+E_sensitivity:
+  description: One-factor-at-a-time sensitivity (others at default, rho = 1.2).
+  seeds: 10
+  base: {rho: 1.2}
+  factors:
+    deadline_u: [3.0, 5.0, 10.0, 20.0]
+    deadline_s: [15.0, 30.0, 60.0, 120.0]
+    n_cloud: [2, 4, 8]
+    wan_rtt: [0.06, 0.12, 0.24]
+    s_gw: [0.1, 0.2, 0.4]
+    poll_latency: [0.5, 1.5, 3.0]
+    furrow.tau_r: [0.1, 0.25, 0.5, 1.0]
+    furrow.r_max: [2, 4, 8, 12]
+    connectivity: [daily, mixed, poor]
+  methods:
+    - [THR+PRIO, PRIO, THR, {}]
+    - [THR+EDF, EDF, THR, {}]
+    - [FURROW, FURROW-S, FURROW-R, {}]
+
+F_robustness:
+  description: Data degradation, bursty arrivals, estimation error, scalability.
+  seeds: 10
+  base: {rho: 1.2}
+  factors:
+    extra_missing: [0.0, 0.1, 0.2, 0.4]
+    sync_mode: [uniform, burst]
+    noise_sigma: [0.1, 0.3, 0.5]
+  scale:            # n_farms with proportional shared capacity (n_cloud, n_fog)
+    - {n_farms: 100, n_cloud: 2, n_fog: 1}
+    - {n_farms: 200, n_cloud: 4, n_fog: 2}
+    - {n_farms: 400, n_cloud: 8, n_fog: 4}
+    - {n_farms: 800, n_cloud: 16, n_fog: 8}
+  methods:
+    - [THR+PRIO, PRIO, THR, {}]
+    - [THR+EDF, EDF, THR, {}]
+    - [FURROW, FURROW-S, FURROW-R, {}]

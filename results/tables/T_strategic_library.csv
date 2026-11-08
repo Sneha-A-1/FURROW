@@ -1,0 +1,6 @@
+Template,Instances,CPU full (s),CPU summary (s),Partitions full,Partitions summary,MB full,MB summary,Summary error (mean)
+S1 water status,60,0.260,0.009,80,1,1.11,0.065,0.006
+S2 deficit days,60,0.267,0.016,84,1,1.13,0.065,0.169
+S3 spatial CV,60,0.254,0.013,80,1,1.10,0.065,0.024
+S4 drying rate,60,0.287,0.027,80,1,1.13,0.065,0.135
+S5 analogue top-5,60,2.633,0.045,798,2,11.02,0.129,0.337

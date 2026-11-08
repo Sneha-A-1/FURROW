@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/*.rda
+data/processed/
+results/logs/
+*.aux
+*.log
+paper/diagrams/*_preview*.png
+.ipynb_checkpoints/

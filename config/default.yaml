@@ -1,0 +1,47 @@
+
+data:
+  calibration_year: 2011          # thresholds FC/LL and staleness model sigma(p, m, a)
+  evaluation_year: 2012
+  root_zone_ports: [1, 2]         # 0.3 m and 0.6 m
+  grade_thresholds: [0.5, 0.7, 0.85]
+retrieval:
+  voi_min: 0.05                   # minimum station VoI to poll
+  alert_probability: 0.5          # alert if P(g >= 2) >= 0.5
+  lookback_days: 60
+  baselines: {fresh_max_age_days: 3, idw_k: 5, idw_power: 2}
+scenario:
+  n_farms: 200
+  window_s: 300
+  sync_mode: uniform
+  rho: 1.2                        # offered strategic load relative to shared capacity
+  deadline_urgent_s: 10           # [assumption] SLO: alert advisory within 10 s of upload
+  deadline_strategic_s: 30        # [assumption] SLO: interactive analytics within 30 s
+  connectivity: mixed             # station reporting interval mix {1,3,7} d w.p. {0.5,0.3,0.2}
+  budget_max: 8
+  budget_margin_s: 1.0
+  shift_days: 45
+  season: ["2012-04-01", "2012-11-15"]
+platform:                         # all [assumption]
+  n_cloud: 4
+  k_cloud: 4
+  s_cloud: 1.0
+  n_fog: 2
+  k_fog: 4
+  s_fog: 0.7
+  s_gw: 0.2
+  power_w: {gw: [2.7, 6.4], fog: [30, 90], cloud: [40, 120]}     # [idle, max] per node
+  price_per_core_hour: {gw: 0.0, fog: 0.024, cloud: 0.048}
+  wan: {rtt_s: 0.120, bw_Bps: 1.25e6}
+  fog_cloud: {rtt_s: 0.040, bw_Bps: 12.5e6}
+  cloud_store: {lat_s: 0.020, bw_Bps: 50.0e6}
+  local: {lat_s: 0.001, bw_Bps: 100.0e6}
+  io_concurrency: 8
+  poll: {latency_s: 1.5, concurrency: 4}
+  exec_noise_sigma: 0.10
+scheduler:
+  furrow: {r_max: 8, tau_r_s: 0.25, guard_s: 2.0, gw_guard_s: 15.0}
+  minmin: {batch_interval_s: 0.5, batch_max: 64}
+  ga: {batch_interval_s: 1.0, batch_max: 64, population: 20, generations: 30,
+       crossover: 0.9, mutation: 0.05, elitism: 2, weights: {urgent: 10, strategic: 1}}
+  local_queue_capacity: 2
+  dispatch_window: 64

@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it and the associated article."
+title: "An Efficient Cloud-Enabled Framework for Smart Agriculture Using Value-of-Information Retrieval and Reservation-Based Scheduling"
+version: 1.0.0
+license: MIT
+authors:
+  - name: "Sneha"
+    affiliation: "Department of Computer Science and Engineering, Graphic Era (Deemed to be University), Dehradun, India"
+  - family-names: "Singh"
+    given-names: "Prabh Deep"
+    affiliation: "Department of Computer Science and Engineering, Graphic Era (Deemed to be University), Dehradun, India"
+  - family-names: "Tripathi"
+    given-names: "Vikas"
+    affiliation: "Department of Computer Science and Engineering, Graphic Era (Deemed to be University), Dehradun, India"
+references:
+  - type: article
+    title: "Spatio-temporal interpolation of soil water, temperature, and electrical conductivity in 3D + T: The Cook Agronomy Farm data set"
+    authors:
+      - family-names: Gasch
+        given-names: Caley K.
+    journal: "Spatial Statistics"
+    volume: 14
+    start: 70
+    end: 90
+    year: 2015
+    doi: 10.1016/j.spasta.2015.04.001
